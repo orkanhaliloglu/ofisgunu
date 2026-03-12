@@ -78,6 +78,10 @@ function App() {
           getDayStatus={getDayStatus} 
         />
       </aside>
+
+      <footer className="footer">
+        <p>by orkan</p>
+      </footer>
     </div>
   );
 }

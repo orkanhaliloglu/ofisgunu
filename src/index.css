@@ -453,3 +453,15 @@ body {
 .animate-pop {
   animation: popIn 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
+
+/* Footer */
+.footer {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 1.5rem 0;
+  margin-top: 1rem;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  opacity: 0.7;
+  letter-spacing: 0.5px;
+}
