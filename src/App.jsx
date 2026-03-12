@@ -24,7 +24,7 @@ function App() {
   return (
     <div className="app-container">
       <header className="header animate-pop">
-        <h1>%40 Ofis Günlüğü</h1>
+        <h1>Ofis Günü Hesaplama</h1>
         
         <div className="month-selector">
           <button className="icon-btn" onClick={handlePrevMonth}>
