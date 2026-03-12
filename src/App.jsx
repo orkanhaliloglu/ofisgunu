@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import { addMonths, subMonths } from 'date-fns';
+import React, { useState, useMemo } from 'react';
+import { addMonths, subMonths, isSameMonth } from 'date-fns';
 import { ChevronLeft, ChevronRight, Building2, Home, Palmtree, TentTree } from 'lucide-react';
-import { getCalendarWeeks, formatMonthYear } from './utils/dateHelpers';
+import { getCalendarWeeks, formatMonthYear, isWorkingDay, getDateKey, isPublicHoliday, calculateRequiredOfficeDays } from './utils/dateHelpers';
 import { useAttendanceData } from './hooks/useAttendanceData';
 import Calendar from './components/Calendar';
 import WeeklyTracker from './components/WeeklyTracker';
@@ -21,8 +21,54 @@ function App() {
   const weeks = getCalendarWeeks(year, monthIndex);
   const currentMonthStr = formatMonthYear(year, monthIndex);
 
+  // Calculate month's progress for dynamic background
+  const completionPercent = useMemo(() => {
+    let totalOffice = 0;
+    let totalRequired = 0;
+
+    weeks.forEach(week => {
+      const monthDays = week.filter(date => isSameMonth(date, currentDate));
+      const weekDays = monthDays.filter(isWorkingDay);
+      if (weekDays.length === 0) return;
+
+      let weekLeaves = 0;
+      
+      weekDays.forEach(date => {
+        const key = getDateKey(date);
+        const status = getDayStatus(key);
+        const isHoliday = isPublicHoliday(date);
+
+        if (isHoliday || status === 'leave' || status === 'holiday') {
+          weekLeaves++;
+        } else if (status === 'office') {
+          totalOffice++;
+        }
+      });
+
+      const activeWorkingDays = weekDays.length - weekLeaves;
+      if (activeWorkingDays > 0) {
+        totalRequired += calculateRequiredOfficeDays(activeWorkingDays);
+      }
+    });
+
+    return totalRequired > 0 ? Math.min(100, (totalOffice / totalRequired) * 100) : 100;
+  }, [weeks, currentDate, getDayStatus]);
+
+  // Determine background class
+  let bgClass = "bg-state-cloudy";
+  if (completionPercent >= 100) bgClass = "bg-state-sunny";
+  else if (completionPercent >= 50) bgClass = "bg-state-mixed";
+
   return (
-    <div className="app-container">
+    <div className={`app-wrapper ${bgClass}`}>
+      <div className="dynamic-background">
+        <div className="moon"></div>
+        <div className="sun"></div>
+        <div className="cloud cloud-1"></div>
+        <div className="cloud cloud-2"></div>
+        <div className="cloud cloud-3"></div>
+      </div>
+      <div className="app-container">
       <header className="header animate-pop">
         <h1>Ofis Günü Hesaplama</h1>
         
@@ -82,6 +128,7 @@ function App() {
       <footer className="footer">
         <p>by orkan</p>
       </footer>
+    </div>
     </div>
   );
 }

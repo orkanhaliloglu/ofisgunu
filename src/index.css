@@ -26,14 +26,160 @@
 body {
   margin: 0;
   font-family: 'Outfit', sans-serif;
-  background-color: var(--bg-color);
   color: var(--text-primary);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  background-color: var(--bg-color);
   background-image: 
     radial-gradient(circle at 15% 50%, rgba(59, 130, 246, 0.15), transparent 25%),
     radial-gradient(circle at 85% 30%, rgba(16, 185, 129, 0.15), transparent 25%);
   background-attachment: fixed;
+  overflow-x: hidden;
+}
+
+/* Dynamic Background Wrapper */
+.app-wrapper {
   min-height: 100vh;
-  -webkit-font-smoothing: antialiased;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Background overlay based on state to darken/lighten the whole screen slightly */
+.app-wrapper::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  z-index: -2;
+  transition: background-color 2s ease;
+  pointer-events: none;
+}
+
+.bg-state-cloudy::before {
+  background-color: rgba(10, 15, 30, 0.8); /* Dark and gloomy */
+}
+.bg-state-mixed::before {
+  background-color: rgba(30, 58, 138, 0.2); /* clearing up */
+}
+.bg-state-sunny::before {
+  background-color: rgba(56, 189, 248, 0.1); /* Bright */
+}
+
+/* Sun / Moon Animation */
+.dynamic-background {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  z-index: -1;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* Moon for cloudy state */
+.moon {
+  position: absolute;
+  top: 50px;
+  right: 15%;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: transparent;
+  box-shadow: -20px 20px 0 0 #f1f5f9;
+  transition: all 2s ease;
+  opacity: 0;
+  transform: translateY(-50px);
+}
+
+.bg-state-cloudy .moon {
+  opacity: 0.8;
+  transform: translateY(0);
+}
+
+/* Sun for sunny state */
+.sun {
+  position: absolute;
+  top: -50px;
+  right: -50px;
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, rgba(253,224,71,0.8) 0%, rgba(253,224,71,0.2) 40%, transparent 70%);
+  border-radius: 50%;
+  filter: blur(10px);
+  transition: all 2s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: scale(0.5) translate(100px, -100px);
+  opacity: 0;
+}
+
+.bg-state-mixed .sun {
+  transform: scale(0.8) translate(0, 0);
+  opacity: 0.5;
+}
+
+.bg-state-sunny .sun {
+  transform: scale(1) translate(-50px, 50px);
+  opacity: 1;
+}
+
+/* Clouds Animation */
+.cloud {
+  position: absolute;
+  border-radius: 50px;
+  filter: blur(4px);
+  transition: all 2s ease;
+}
+
+.cloud::before, .cloud::after {
+  content: '';
+  position: absolute;
+  background: inherit;
+  border-radius: 50%;
+}
+
+.cloud-1 {
+  width: 250px; height: 80px;
+  top: 15%; left: 5%;
+  animation: float 20s infinite ease-in-out;
+}
+.cloud-1::before { width: 120px; height: 120px; top: -50px; left: 30px; }
+.cloud-1::after { width: 90px; height: 90px; top: -40px; right: 30px; }
+
+.cloud-2 {
+  width: 300px; height: 100px;
+  top: 25%; right: -5%;
+  animation: float 25s infinite ease-in-out reverse;
+}
+.cloud-2::before { width: 150px; height: 150px; top: -70px; left: 40px; }
+.cloud-2::after { width: 120px; height: 120px; top: -50px; right: 40px; }
+
+.cloud-3 {
+  width: 200px; height: 70px;
+  bottom: 25%; left: 15%;
+  animation: float 18s infinite ease-in-out 5s;
+}
+.cloud-3::before { width: 90px; height: 90px; top: -40px; left: 20px; }
+.cloud-3::after { width: 70px; height: 70px; top: -30px; right: 20px; }
+
+/* Cloud states */
+.bg-state-cloudy .cloud {
+  background: rgba(71, 85, 105, 0.6); /* Heavy, dark clouds */
+  transform: scale(1) translateX(0);
+  opacity: 1;
+}
+
+.bg-state-mixed .cloud {
+  background: rgba(148, 163, 184, 0.3); /* Lighter clouds */
+  transform: scale(0.8) translateX(-10vw);
+  opacity: 0.5;
+}
+
+.bg-state-sunny .cloud {
+  background: rgba(255, 255, 255, 0.1); /* Very faint clouds moving away */
+  transform: scale(0.5) translateX(-30vw);
+  opacity: 0;
+}
+
+@keyframes float {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-15px); }
+  100% { transform: translateY(0); }
 }
 
 * {
@@ -452,6 +598,82 @@ body {
 
 .animate-pop {
   animation: popIn 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* Face Illustration */
+.illustration-face {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+}
+
+.face-eyes {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 6px;
+  margin-top: -4px;
+}
+
+.eye {
+  width: 6px;
+  height: 8px;
+  background-color: var(--bg-color);
+  border-radius: 4px;
+  transition: all 0.4s ease;
+}
+
+.face-mouth {
+  width: 20px;
+  height: 4px;
+  background-color: var(--bg-color);
+  border-radius: 4px;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-origin: center top;
+}
+
+/* Face States */
+.illustration-face.is-happy {
+  transform: scale(1.1) rotate(5deg);
+}
+.illustration-face.is-happy .eye {
+  height: 6px;
+  transform: translateY(2px) scaleY(0.8);
+}
+.illustration-face.is-happy .face-mouth {
+  height: 12px;
+  border-radius: 2px 2px 12px 12px;
+  transform: translateY(2px);
+}
+
+.illustration-face.is-meh {
+  transform: scale(1);
+}
+.illustration-face.is-meh .face-mouth {
+  width: 16px;
+  height: 4px;
+  border-radius: 4px;
+}
+
+.illustration-face.is-sad {
+  transform: scale(0.9) rotate(-5deg);
+}
+.illustration-face.is-sad .eye {
+  height: 6px;
+  transform: translateY(2px);
+}
+.illustration-face.is-sad .face-mouth {
+  height: 10px;
+  width: 16px;
+  border-radius: 12px 12px 2px 2px;
+  transform: translateY(4px);
 }
 
 /* Footer */

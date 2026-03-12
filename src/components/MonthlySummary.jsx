@@ -1,7 +1,7 @@
 import React from 'react';
 import { isSameMonth } from 'date-fns';
 import { isWorkingDay, getDateKey, calculateRequiredOfficeDays, isPublicHoliday } from '../utils/dateHelpers';
-import { Briefcase, CalendarCheck, CalendarOff, Smile, Meh, Frown } from 'lucide-react';
+import { Briefcase, CalendarCheck, CalendarOff } from 'lucide-react';
 
 export default function MonthlySummary({ weeks, activeMonthDate, getDayStatus }) {
   let totalWorkingDays = 0;
@@ -46,19 +46,20 @@ export default function MonthlySummary({ weeks, activeMonthDate, getDayStatus })
   if (isHappy) faceColor = 'var(--color-home)'; // Happy (Green)
   else if (isMeh) faceColor = 'var(--color-leave)'; // Meh (Amber)
 
+  // Face classes for CSS illustration
+  const faceStateClass = isHappy ? 'is-happy' : isMeh ? 'is-meh' : 'is-sad';
+
   return (
     <div className="glass-panel monthly-summary animate-pop">
       <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem'}}>
         <h2 style={{margin: 0}}>Aylık Özet</h2>
-        <div 
-          className="happiness-face" 
-          style={{ 
-            color: faceColor,
-            transition: 'all 0.5s ease',
-            transform: isHappy ? 'scale(1.1) rotate(5deg)' : isSad ? 'scale(0.9) rotate(-5deg)' : 'scale(1)'
-          }}
-        >
-          {isHappy ? <Smile size={32} /> : isMeh ? <Meh size={32} /> : <Frown size={32} />}
+        
+        <div className={`illustration-face ${faceStateClass}`} style={{ backgroundColor: faceColor }}>
+          <div className="face-eyes">
+            <div className="eye"></div>
+            <div className="eye"></div>
+          </div>
+          <div className="face-mouth"></div>
         </div>
       </div>
       
