@@ -1,0 +1,374 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
+
+:root {
+  /* Color Palette */
+  --bg-color: #0d0f17;
+  --surface-color: rgba(255, 255, 255, 0.03);
+  --surface-border: rgba(255, 255, 255, 0.08);
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  
+  /* Status Colors */
+  --color-office: #3b82f6; /* Vibrant Blue */
+  --color-office-glow: rgba(59, 130, 246, 0.5);
+  
+  --color-home: #10b981; /* Emerald Green */
+  --color-home-glow: rgba(16, 185, 129, 0.5);
+  
+  --color-leave: #f59e0b; /* Amber */
+  --color-holiday: #ef4444; /* Red */
+  
+  --color-empty: rgba(255, 255, 255, 0.05);
+  
+  --glass-blur: blur(12px);
+}
+
+body {
+  margin: 0;
+  font-family: 'Outfit', sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-primary);
+  background-image: 
+    radial-gradient(circle at 15% 50%, rgba(59, 130, 246, 0.15), transparent 25%),
+    radial-gradient(circle at 85% 30%, rgba(16, 185, 129, 0.15), transparent 25%);
+  background-attachment: fixed;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* Utilities */
+.glass-panel {
+  background: var(--surface-color);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--surface-border);
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+/* App Layout */
+.app-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  display: grid;
+  grid-template-columns: 1fr 350px;
+  gap: 2rem;
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .app-container {
+    grid-template-columns: 1fr;
+  }
+}
+
+.header {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.header h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin: 0;
+  background: linear-gradient(135deg, #fff, #94a3b8);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.month-selector {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.icon-btn {
+  background: var(--surface-color);
+  border: 1px solid var(--surface-border);
+  color: var(--text-primary);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.icon-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.month-display {
+  font-size: 1.25rem;
+  font-weight: 500;
+  min-width: 160px;
+  text-align: center;
+}
+
+/* Calendar Component */
+.calendar {
+  padding: 2rem;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 1rem;
+}
+
+.day-header {
+  text-align: center;
+  font-weight: 600;
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  padding-bottom: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.day-cell {
+  aspect-ratio: 1;
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: var(--color-empty);
+  border: 1px solid transparent;
+  position: relative;
+  overflow: hidden;
+}
+
+.day-cell:not(.empty):hover {
+  transform: scale(1.05);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.day-cell.empty {
+  opacity: 0.3;
+  cursor: default;
+}
+
+.day-cell .date-num {
+  font-size: 1.25rem;
+  font-weight: 600;
+  z-index: 2;
+}
+
+.day-cell .status-icon {
+  margin-top: 4px;
+  opacity: 0.8;
+  z-index: 2;
+}
+
+/* Status Variations for Days */
+.day-cell.status-office {
+  background: rgba(59, 130, 246, 0.15);
+  border-color: var(--color-office);
+  color: var(--color-office);
+  box-shadow: 0 0 20px var(--color-office-glow);
+}
+.day-cell.status-office::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: linear-gradient(135deg, transparent, rgba(59, 130, 246, 0.1));
+}
+
+.day-cell.status-home {
+  background: rgba(16, 185, 129, 0.15);
+  border-color: var(--color-home);
+  color: var(--color-home);
+  box-shadow: 0 0 20px var(--color-home-glow);
+}
+
+.day-cell.status-leave {
+  background: rgba(245, 158, 11, 0.15);
+  border-color: var(--color-leave);
+  color: var(--color-leave);
+}
+
+.day-cell.status-holiday {
+  background: rgba(239, 68, 68, 0.15);
+  border-color: var(--color-holiday);
+  color: var(--color-holiday);
+}
+
+.day-cell.is-weekend {
+  opacity: 0.6;
+}
+
+/* Weekly Tracker */
+.tracker-sidebar {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.tracker-sidebar h2 {
+  font-size: 1.5rem;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.week-card {
+  background: rgba(0,0,0,0.2);
+  border-radius: 12px;
+  padding: 1.25rem;
+  border: 1px solid var(--surface-border);
+}
+
+.week-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+  font-weight: 500;
+}
+
+.progress-container {
+  height: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 0.5rem;
+}
+
+.progress-bar {
+  height: 100%;
+  background: var(--color-office);
+  transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.progress-bar.success {
+  background: var(--color-home);
+}
+.progress-bar.danger {
+  background: var(--color-holiday);
+}
+
+.week-stats {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  display: flex;
+  justify-content: space-between;
+}
+
+/* Legend */
+.legend {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-top: 2rem;
+  grid-column: 1 / -1;
+  flex-wrap: wrap;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  background: var(--surface-color);
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  border: 1px solid var(--surface-border);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+/* Monthly Summary */
+.monthly-summary {
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.01));
+}
+
+.monthly-summary h2 {
+  font-size: 1.5rem;
+  margin: 0 0 1.5rem 0;
+}
+
+.summary-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.summary-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: rgba(0, 0, 0, 0.2);
+  padding: 1rem;
+  border-radius: 12px;
+  border: 1px solid var(--surface-border);
+}
+
+.icon-blue { color: var(--color-office); }
+.icon-green { color: var(--color-home); }
+.icon-amber { color: var(--color-leave); }
+
+.summary-details {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.summary-label {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.summary-value {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.summary-value.highlight {
+  color: var(--color-office);
+}
+
+.summary-progress-wrapper {
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--surface-border);
+}
+
+.summary-progress-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+/* Fix for animation of popping in */
+@keyframes popIn {
+  0% { transform: scale(0.9); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.animate-pop {
+  animation: popIn 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
