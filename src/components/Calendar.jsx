@@ -1,11 +1,11 @@
 import React from 'react';
 import { isSameMonth, isWeekend } from 'date-fns';
-import { Building2, Home, Palmtree, TentTree } from 'lucide-react';
+import { Building2, Palmtree, TentTree } from 'lucide-react';
 import { getDateKey, isWorkingDay, isPublicHoliday } from '../utils/dateHelpers';
 
 const DAYS_OF_WEEK = ['PZT', 'SAL', 'ÇAR', 'PER', 'CUM', 'CMT', 'PAZ'];
 
-const STATUS_ORDER = [null, 'office', 'home', 'leave'];
+const STATUS_ORDER = [null, 'office', 'leave'];
 
 export default function Calendar({ weeks, currentMonthStr, activeMonthDate, getDayStatus, setDayStatus }) {
   
@@ -26,7 +26,6 @@ export default function Calendar({ weeks, currentMonthStr, activeMonthDate, getD
     if (isHol && !status) return <TentTree size={20} className="text-holiday-icon" style={{color: 'var(--color-holiday)'}} />;
     switch (status) {
       case 'office': return <Building2 size={20} />;
-      case 'home': return <Home size={20} />;
       case 'leave': return <Palmtree size={20} />;
       default: return null;
     }

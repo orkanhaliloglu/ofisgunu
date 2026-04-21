@@ -387,12 +387,6 @@ body {
   background: linear-gradient(135deg, transparent, rgba(59, 130, 246, 0.1));
 }
 
-.day-cell.status-home {
-  background: rgba(16, 185, 129, 0.15);
-  border-color: var(--color-home);
-  color: var(--color-home);
-  box-shadow: 0 0 20px var(--color-home-glow);
-}
 
 .day-cell.status-leave {
   background: rgba(245, 158, 11, 0.15);

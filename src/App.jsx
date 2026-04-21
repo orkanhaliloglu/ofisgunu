@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { addMonths, subMonths, isSameMonth } from 'date-fns';
-import { ChevronLeft, ChevronRight, Building2, Home, Palmtree, TentTree } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Building2, Palmtree, TentTree } from 'lucide-react';
 import { getCalendarWeeks, formatMonthYear, isWorkingDay, getDateKey, isPublicHoliday, calculateRequiredOfficeDays } from './utils/dateHelpers';
 import { useAttendanceData } from './hooks/useAttendanceData';
 import Calendar from './components/Calendar';
@@ -100,9 +100,7 @@ function App() {
           <div className="legend-item" style={{ borderColor: 'var(--color-office)', color: 'var(--color-office)' }}>
             <Building2 size={16} /> Ofis
           </div>
-          <div className="legend-item" style={{ borderColor: 'var(--color-home)', color: 'var(--color-home)' }}>
-            <Home size={16} /> Ev / Uzaktan
-          </div>
+
           <div className="legend-item" style={{ borderColor: 'var(--color-leave)', color: 'var(--color-leave)' }}>
             <Palmtree size={16} /> İzin
           </div>
