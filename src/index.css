@@ -287,6 +287,18 @@ body {
   padding: 2rem;
 }
 
+@media (max-width: 600px) {
+  .calendar {
+    padding: 1rem;
+  }
+}
+
+@media (max-width: 400px) {
+  .calendar {
+    padding: 0.5rem;
+  }
+}
+
 .calendar-grid {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
@@ -296,6 +308,12 @@ body {
 @media (max-width: 600px) {
   .calendar-grid {
     gap: 0.5rem;
+  }
+}
+
+@media (max-width: 400px) {
+  .calendar-grid {
+    gap: 0.25rem;
   }
 }
 
@@ -360,6 +378,12 @@ body {
   }
 }
 
+@media (max-width: 400px) {
+  .day-cell .date-num {
+    font-size: 0.8rem;
+  }
+}
+
 .day-cell .status-icon {
   margin-top: 4px;
   opacity: 0.8;
@@ -370,6 +394,13 @@ body {
   .day-cell .status-icon {
     transform: scale(0.8);
     margin-top: 2px;
+  }
+}
+
+@media (max-width: 400px) {
+  .day-cell .status-icon {
+    transform: scale(0.65);
+    margin-top: 0;
   }
 }
 
