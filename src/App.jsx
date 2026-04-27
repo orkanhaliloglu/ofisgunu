@@ -24,7 +24,7 @@ function App() {
   // Calculate month's progress for dynamic background
   const completionPercent = useMemo(() => {
     let totalOffice = 0;
-    let totalRequired = 0;
+    let rawTotalRequired = 0;
 
     weeks.forEach(week => {
       const monthDays = week.filter(date => isSameMonth(date, currentDate));
@@ -47,10 +47,11 @@ function App() {
 
       const activeWorkingDays = weekDays.length - weekLeaves;
       if (activeWorkingDays > 0) {
-        totalRequired += calculateRequiredOfficeDays(activeWorkingDays);
+        rawTotalRequired += activeWorkingDays * 0.4;
       }
     });
 
+    const totalRequired = Math.round(rawTotalRequired);
     return totalRequired > 0 ? Math.min(100, (totalOffice / totalRequired) * 100) : 100;
   }, [weeks, currentDate, getDayStatus]);
 
