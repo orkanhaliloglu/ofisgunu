@@ -79,12 +79,20 @@ export const PUBLIC_HOLIDAYS = [
   '2026-04-23', // Ulusal Egemenlik
   '2026-05-01', // İşçi Bayramı
   '2026-05-19', // Atatürk'ü Anma
+  '2026-05-25', // Tam Gün Tatil (Yıllık izin)
   '2026-05-26', // Kurban B. Arife
   '2026-05-27', // Kurban B.
   '2026-05-28', // Kurban B.
   '2026-05-29', // Kurban B.
   '2026-05-30', // Kurban B.
   '2026-07-15', // Demokrasi
+  '2026-07-16', // Tam Gün Tatil (Yıllık izin)
+  '2026-07-17', // Tam Gün Tatil (Yıllık izin)
+  '2026-08-10', // Tam Gün Tatil (Yıllık izin)
+  '2026-08-11', // Tam Gün Tatil (Yıllık izin)
+  '2026-08-12', // Tam Gün Tatil (Yıllık izin)
+  '2026-08-13', // Tam Gün Tatil (Yıllık izin)
+  '2026-08-14', // Tam Gün Tatil (Yıllık izin)
   '2026-08-30', // Zafer Bayramı
   '2026-10-28', // Cumhuriyet B. Arife
   '2026-10-29', // Cumhuriyet Bayramı
