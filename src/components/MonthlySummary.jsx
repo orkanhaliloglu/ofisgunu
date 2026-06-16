@@ -1,11 +1,12 @@
 import React from 'react';
 import { isSameMonth } from 'date-fns';
 import { isWorkingDay, getDateKey, isPublicHoliday } from '../utils/dateHelpers';
-import { Briefcase, Home, CalendarOff, CalendarCheck, Laptop } from 'lucide-react';
+import { Briefcase, Home, CalendarCheck, Laptop, Plane, Palmtree } from 'lucide-react';
 
 export default function MonthlySummary({ weeks, activeMonthDate, getDayStatus }) {
   let totalWorkingDays = 0;
   let totalLeaves = 0;
+  let totalPublicHolidays = 0;
   let totalOffice = 0;
   let totalHome = 0;
   let totalRemote = 0;
@@ -24,10 +25,15 @@ export default function MonthlySummary({ weeks, activeMonthDate, getDayStatus })
       const status = getDayStatus(key);
       const isHoliday = isPublicHoliday(date);
 
-      if (isHoliday || status === 'leave' || status === 'holiday' || status === 'remote') {
+      if (isHoliday || status === 'holiday') {
+        weekLeaves++;
+        totalPublicHolidays++;
+      } else if (status === 'leave') {
         weekLeaves++;
         totalLeaves++;
-        if (status === 'remote') totalRemote++;
+      } else if (status === 'remote') {
+        weekLeaves++;
+        totalRemote++;
       } else if (status === 'office') {
         totalOffice++;
       } else if (status === 'home') {
@@ -102,10 +108,18 @@ export default function MonthlySummary({ weeks, activeMonthDate, getDayStatus })
         </div>
         
         <div className="summary-item">
-          <CalendarOff size={20} className="icon-amber" style={{ color: 'var(--color-holiday)' }} />
+          <Plane size={20} className="icon-amber" style={{ color: 'var(--color-leave)' }} />
           <div className="summary-details">
-            <span className="summary-label">İzin / Tatil</span>
+            <span className="summary-label">İzin</span>
             <span className="summary-value" style={{ color: 'var(--text-primary)' }}>{totalLeaves} Gün</span>
+          </div>
+        </div>
+
+        <div className="summary-item">
+          <Palmtree size={20} className="icon-red" style={{ color: 'var(--color-holiday)' }} />
+          <div className="summary-details">
+            <span className="summary-label">Resmi Tatil</span>
+            <span className="summary-value" style={{ color: 'var(--text-primary)' }}>{totalPublicHolidays} Gün</span>
           </div>
         </div>
       </div>

@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { addMonths, subMonths, isSameMonth } from 'date-fns';
-import { ChevronLeft, ChevronRight, Building2, Home, Palmtree, Laptop } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Building2, Home, Palmtree, Laptop, Plane } from 'lucide-react';
 import { getCalendarWeeks, formatMonthYear, isWorkingDay, getDateKey, isPublicHoliday } from './utils/dateHelpers';
 import { useAttendanceData } from './hooks/useAttendanceData';
 import Calendar from './components/Calendar';
@@ -106,8 +106,11 @@ function App() {
             <div className="legend-item" style={{ borderColor: 'var(--color-remote)', color: 'var(--color-remote)' }}>
               <Laptop size={16} /> Uzaktan
             </div>
+            <div className="legend-item" style={{ borderColor: 'var(--color-leave)', color: 'var(--color-leave)' }}>
+              <Plane size={16} /> İzin
+            </div>
             <div className="legend-item" style={{ borderColor: 'var(--color-holiday)', color: 'var(--color-holiday)' }}>
-              <Palmtree size={16} /> İzin/Tatil
+              <Palmtree size={16} /> Resmi Tatil
             </div>
           </div>
         </main>

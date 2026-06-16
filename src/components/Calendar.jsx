@@ -1,11 +1,11 @@
 import React from 'react';
 import { isSameMonth, isWeekend } from 'date-fns';
-import { Building2, Home, Palmtree, Laptop } from 'lucide-react';
+import { Building2, Home, Palmtree, Laptop, Plane } from 'lucide-react';
 import { getDateKey, isWorkingDay, isPublicHoliday } from '../utils/dateHelpers';
 
 const DAYS_OF_WEEK = ['PZT', 'SAL', 'ÇAR', 'PER', 'CUM', 'CMT', 'PAZ'];
 
-const STATUS_ORDER = [null, 'office', 'home', 'remote', 'holiday'];
+const STATUS_ORDER = [null, 'office', 'home', 'remote', 'leave', 'holiday'];
 
 export default function Calendar({ weeks, currentMonthStr, activeMonthDate, getDayStatus, setDayStatus }) {
   
@@ -28,6 +28,7 @@ export default function Calendar({ weeks, currentMonthStr, activeMonthDate, getD
       case 'office': return <Building2 size={20} />;
       case 'home': return <Home size={20} />;
       case 'remote': return <Laptop size={20} />;
+      case 'leave': return <Plane size={20} />;
       case 'holiday': return <Palmtree size={20} />;
       default: return null;
     }
