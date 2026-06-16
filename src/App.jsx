@@ -6,6 +6,7 @@ import { useAttendanceData } from './hooks/useAttendanceData';
 import Calendar from './components/Calendar';
 import WeeklyTracker from './components/WeeklyTracker';
 import MonthlySummary from './components/MonthlySummary';
+import FeedbackForm from './components/FeedbackForm';
 
 function App() {
   const [currentDate, setCurrentDate] = useState(new Date());
@@ -127,6 +128,10 @@ function App() {
             getDayStatus={getDayStatus} 
           />
         </aside>
+
+        <div style={{ gridColumn: '1 / -1', marginTop: '1rem' }}>
+          <FeedbackForm />
+        </div>
 
         <footer className="footer">
           <p>by orkan</p>
