@@ -1,13 +1,15 @@
 import React from 'react';
 import { isSameMonth } from 'date-fns';
-import { isWorkingDay, getDateKey, calculateRequiredOfficeDays, isPublicHoliday } from '../utils/dateHelpers';
-import { Briefcase, CalendarCheck, CalendarOff } from 'lucide-react';
+import { isWorkingDay, getDateKey, isPublicHoliday } from '../utils/dateHelpers';
+import { Briefcase, Home, CalendarOff, CalendarCheck, Laptop } from 'lucide-react';
 
 export default function MonthlySummary({ weeks, activeMonthDate, getDayStatus }) {
   let totalWorkingDays = 0;
   let totalLeaves = 0;
   let totalOffice = 0;
-  let rawTotalRequired = 0;
+  let totalHome = 0;
+  let totalRemote = 0;
+  let totalRequired = 0;
 
   weeks.forEach(week => {
     const monthDays = week.filter(date => isSameMonth(date, activeMonthDate));
@@ -22,21 +24,22 @@ export default function MonthlySummary({ weeks, activeMonthDate, getDayStatus })
       const status = getDayStatus(key);
       const isHoliday = isPublicHoliday(date);
 
-      if (isHoliday || status === 'leave' || status === 'holiday') {
+      if (isHoliday || status === 'leave' || status === 'holiday' || status === 'remote') {
         weekLeaves++;
         totalLeaves++;
+        if (status === 'remote') totalRemote++;
       } else if (status === 'office') {
         totalOffice++;
+      } else if (status === 'home') {
+        totalHome++;
       }
     });
 
     const activeWorkingDays = weekDays.length - weekLeaves;
     if (activeWorkingDays > 0) {
-      rawTotalRequired += activeWorkingDays * 0.4;
+      totalRequired += Math.round(activeWorkingDays * 0.4);
     }
   });
-
-  const totalRequired = Math.round(rawTotalRequired);
 
   const completionPercent = totalRequired > 0 ? Math.min(100, (totalOffice / totalRequired) * 100) : 100;
   const isHappy = completionPercent >= 100;
@@ -67,26 +70,42 @@ export default function MonthlySummary({ weeks, activeMonthDate, getDayStatus })
       
       <div className="summary-grid">
         <div className="summary-item">
-          <CalendarCheck size={20} className="icon-blue" />
+          <CalendarCheck size={20} className="icon-blue" style={{ color: 'var(--color-office)' }} />
           <div className="summary-details">
             <span className="summary-label">Hedef Ofis</span>
-            <span className="summary-value highlight">{totalRequired} Gün</span>
+            <span className="summary-value highlight" style={{ color: 'var(--color-office)' }}>{totalRequired} Gün</span>
           </div>
         </div>
         
         <div className="summary-item">
-          <Briefcase size={20} className="icon-green" />
+          <Briefcase size={20} className="icon-blue" style={{ color: 'var(--color-office)' }} />
           <div className="summary-details">
             <span className="summary-label">Gerçekleşen</span>
-            <span className="summary-value">{totalOffice} Gün</span>
+            <span className="summary-value" style={{ color: 'var(--text-primary)' }}>{totalOffice} Gün</span>
           </div>
         </div>
         
         <div className="summary-item">
-          <CalendarOff size={20} className="icon-amber" />
+          <Home size={20} className="icon-green" style={{ color: 'var(--color-home)' }} />
+          <div className="summary-details">
+            <span className="summary-label">Evden Çalışma</span>
+            <span className="summary-value" style={{ color: 'var(--text-primary)' }}>{totalHome} Gün</span>
+          </div>
+        </div>
+
+        <div className="summary-item">
+          <Laptop size={20} className="icon-teal" style={{ color: 'var(--color-remote)' }} />
+          <div className="summary-details">
+            <span className="summary-label">Uzaktan</span>
+            <span className="summary-value" style={{ color: 'var(--text-primary)' }}>{totalRemote} Gün</span>
+          </div>
+        </div>
+        
+        <div className="summary-item">
+          <CalendarOff size={20} className="icon-amber" style={{ color: 'var(--color-holiday)' }} />
           <div className="summary-details">
             <span className="summary-label">İzin / Tatil</span>
-            <span className="summary-value">{totalLeaves} Gün</span>
+            <span className="summary-value" style={{ color: 'var(--text-primary)' }}>{totalLeaves} Gün</span>
           </div>
         </div>
       </div>

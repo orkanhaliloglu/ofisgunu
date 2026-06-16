@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { addMonths, subMonths, isSameMonth } from 'date-fns';
-import { ChevronLeft, ChevronRight, Building2, Palmtree, TentTree } from 'lucide-react';
-import { getCalendarWeeks, formatMonthYear, isWorkingDay, getDateKey, isPublicHoliday, calculateRequiredOfficeDays } from './utils/dateHelpers';
+import { ChevronLeft, ChevronRight, Building2, Home, Palmtree, Laptop } from 'lucide-react';
+import { getCalendarWeeks, formatMonthYear, isWorkingDay, getDateKey, isPublicHoliday } from './utils/dateHelpers';
 import { useAttendanceData } from './hooks/useAttendanceData';
 import Calendar from './components/Calendar';
 import WeeklyTracker from './components/WeeklyTracker';
@@ -24,7 +24,7 @@ function App() {
   // Calculate month's progress for dynamic background
   const completionPercent = useMemo(() => {
     let totalOffice = 0;
-    let rawTotalRequired = 0;
+    let totalRequired = 0;
 
     weeks.forEach(week => {
       const monthDays = week.filter(date => isSameMonth(date, currentDate));
@@ -38,7 +38,7 @@ function App() {
         const status = getDayStatus(key);
         const isHoliday = isPublicHoliday(date);
 
-        if (isHoliday || status === 'leave' || status === 'holiday') {
+        if (isHoliday || status === 'leave' || status === 'holiday' || status === 'remote') {
           weekLeaves++;
         } else if (status === 'office') {
           totalOffice++;
@@ -47,11 +47,10 @@ function App() {
 
       const activeWorkingDays = weekDays.length - weekLeaves;
       if (activeWorkingDays > 0) {
-        rawTotalRequired += activeWorkingDays * 0.4;
+        totalRequired += Math.round(activeWorkingDays * 0.4);
       }
     });
 
-    const totalRequired = Math.round(rawTotalRequired);
     return totalRequired > 0 ? Math.min(100, (totalOffice / totalRequired) * 100) : 100;
   }, [weeks, currentDate, getDayStatus]);
 
@@ -70,64 +69,66 @@ function App() {
         <div className="cloud cloud-3"></div>
       </div>
       <div className="app-container">
-      <header className="header animate-pop">
-        <h1>Ofis Günü Hesaplama</h1>
+        <header className="header animate-pop">
+          <h1>Ofis Günü</h1>
+          
+          <div className="month-selector">
+            <button className="icon-btn" onClick={handlePrevMonth}>
+              <ChevronLeft size={24} />
+            </button>
+            <div className="month-display">{currentMonthStr}</div>
+            <button className="icon-btn" onClick={handleNextMonth}>
+              <ChevronRight size={24} />
+            </button>
+          </div>
+        </header>
         
-        <div className="month-selector">
-          <button className="icon-btn" onClick={handlePrevMonth}>
-            <ChevronLeft size={24} />
-          </button>
-          <div className="month-display">{currentMonthStr}</div>
-          <button className="icon-btn" onClick={handleNextMonth}>
-            <ChevronRight size={24} />
-          </button>
-        </div>
-      </header>
-      
-      <main>
-        <Calendar 
-          weeks={weeks} 
-          currentMonthStr={currentMonthStr}
-          activeMonthDate={currentDate}
-          getDayStatus={getDayStatus}
-          setDayStatus={setDayStatus}
-        />
-        
-        <div className="legend animate-pop" style={{ animationDelay: '0.2s' }}>
-          <div className="legend-item">
-            <div style={{ padding: '4px', borderRadius: '50%', background: 'var(--color-empty)' }}></div>
-            Eksik / Boş (Tıkla!)
+        <main>
+          <Calendar 
+            weeks={weeks} 
+            currentMonthStr={currentMonthStr}
+            activeMonthDate={currentDate}
+            getDayStatus={getDayStatus}
+            setDayStatus={setDayStatus}
+          />
+          
+          <div className="legend animate-pop" style={{ animationDelay: '0.2s' }}>
+            <div className="legend-item">
+              <div style={{ padding: '4px', borderRadius: '50%', background: 'var(--color-empty)' }}></div>
+              Boş
+            </div>
+            <div className="legend-item" style={{ borderColor: 'var(--color-office)', color: 'var(--color-office)' }}>
+              <Building2 size={16} /> Ofis
+            </div>
+            <div className="legend-item" style={{ borderColor: 'var(--color-home)', color: 'var(--color-home)' }}>
+              <Home size={16} /> Ev
+            </div>
+            <div className="legend-item" style={{ borderColor: 'var(--color-remote)', color: 'var(--color-remote)' }}>
+              <Laptop size={16} /> Uzaktan
+            </div>
+            <div className="legend-item" style={{ borderColor: 'var(--color-holiday)', color: 'var(--color-holiday)' }}>
+              <Palmtree size={16} /> İzin/Tatil
+            </div>
           </div>
-          <div className="legend-item" style={{ borderColor: 'var(--color-office)', color: 'var(--color-office)' }}>
-            <Building2 size={16} /> Ofis
-          </div>
+        </main>
 
-          <div className="legend-item" style={{ borderColor: 'var(--color-leave)', color: 'var(--color-leave)' }}>
-            <Palmtree size={16} /> İzin
-          </div>
-          <div className="legend-item" style={{ borderColor: 'var(--color-holiday)', color: 'var(--color-holiday)' }}>
-            <TentTree size={16} /> Resmi Tatil
-          </div>
-        </div>
-      </main>
+        <aside>
+          <MonthlySummary 
+            weeks={weeks} 
+            activeMonthDate={currentDate}
+            getDayStatus={getDayStatus} 
+          />
+          <WeeklyTracker 
+            weeks={weeks} 
+            activeMonthDate={currentDate}
+            getDayStatus={getDayStatus} 
+          />
+        </aside>
 
-      <aside>
-        <MonthlySummary 
-          weeks={weeks} 
-          activeMonthDate={currentDate}
-          getDayStatus={getDayStatus} 
-        />
-        <WeeklyTracker 
-          weeks={weeks} 
-          activeMonthDate={currentDate}
-          getDayStatus={getDayStatus} 
-        />
-      </aside>
-
-      <footer className="footer">
-        <p>by orkan</p>
-      </footer>
-    </div>
+        <footer className="footer">
+          <p>by orkan</p>
+        </footer>
+      </div>
     </div>
   );
 }

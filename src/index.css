@@ -1,26 +1,29 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
 
 :root {
-  /* Color Palette */
-  --bg-color: #0d0f17;
-  --surface-color: rgba(255, 255, 255, 0.03);
-  --surface-border: rgba(255, 255, 255, 0.08);
+  /* Color Palette - Summer Beach Theme */
+  --bg-color: #0c4a6e; /* Ocean Deep Blue */
+  --surface-color: rgba(255, 255, 255, 0.12);
+  --surface-border: rgba(255, 255, 255, 0.2);
   --text-primary: #f8fafc;
-  --text-secondary: #94a3b8;
+  --text-secondary: #bae6fd; /* Light blue text */
   
   /* Status Colors */
-  --color-office: #3b82f6; /* Vibrant Blue */
-  --color-office-glow: rgba(59, 130, 246, 0.5);
+  --color-office: #0ea5e9; /* Light Ocean Blue */
+  --color-office-glow: rgba(14, 165, 233, 0.4);
   
   --color-home: #10b981; /* Emerald Green */
-  --color-home-glow: rgba(16, 185, 129, 0.5);
+  --color-home-glow: rgba(16, 185, 129, 0.4);
   
-  --color-leave: #f59e0b; /* Amber */
-  --color-holiday: #ef4444; /* Red */
+  --color-remote: #06b6d4; /* Cyan/Teal for remote */
+  --color-remote-glow: rgba(6, 182, 212, 0.4);
   
-  --color-empty: rgba(255, 255, 255, 0.05);
+  --color-leave: #f59e0b; /* Amber/Sand */
+  --color-holiday: #f43f5e; /* Rose / Summer Red */
   
-  --glass-blur: blur(12px);
+  --color-empty: rgba(255, 255, 255, 0.1);
+  
+  --glass-blur: blur(16px);
 }
 
 body {
@@ -31,8 +34,9 @@ body {
   -webkit-font-smoothing: antialiased;
   background-color: var(--bg-color);
   background-image: 
-    radial-gradient(circle at 15% 50%, rgba(59, 130, 246, 0.15), transparent 25%),
-    radial-gradient(circle at 85% 30%, rgba(16, 185, 129, 0.15), transparent 25%);
+    linear-gradient(to bottom, transparent 60%, rgba(253, 224, 71, 0.15) 100%), /* Sandy bottom glow */
+    radial-gradient(circle at 20% 40%, rgba(14, 165, 233, 0.2), transparent 40%),
+    radial-gradient(circle at 80% 60%, rgba(16, 185, 129, 0.15), transparent 40%);
   background-attachment: fixed;
   overflow-x: hidden;
 }
@@ -59,13 +63,13 @@ body {
 }
 
 .bg-state-cloudy::before {
-  background-color: rgba(10, 15, 30, 0.8); /* Dark and gloomy */
+  background-color: rgba(2, 6, 23, 0.6); /* Deep ocean night */
 }
 .bg-state-mixed::before {
-  background-color: rgba(30, 58, 138, 0.2); /* clearing up */
+  background-color: rgba(2, 132, 199, 0.2); /* Mid-day ocean */
 }
 .bg-state-sunny::before {
-  background-color: rgba(56, 189, 248, 0.1); /* Bright */
+  background-color: rgba(56, 189, 248, 0.1); /* Bright tropical day */
 }
 
 /* Sun / Moon Animation */
@@ -122,12 +126,14 @@ body {
   opacity: 1;
 }
 
-/* Clouds Animation */
+/* Clouds */
 .cloud {
   position: absolute;
-  border-radius: 50px;
-  filter: blur(4px);
-  transition: all 2s ease;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 100px;
+  transition: all 3s ease;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
 }
 
 .cloud::before, .cloud::after {
@@ -138,20 +144,20 @@ body {
 }
 
 .cloud-1 {
-  width: 250px; height: 80px;
-  top: 15%; left: 5%;
+  width: 150px; height: 50px;
+  top: 20%; left: 10%;
   animation: float 20s infinite ease-in-out;
 }
-.cloud-1::before { width: 120px; height: 120px; top: -50px; left: 30px; }
-.cloud-1::after { width: 90px; height: 90px; top: -40px; right: 30px; }
+.cloud-1::before { width: 70px; height: 70px; top: -30px; left: 20px; }
+.cloud-1::after { width: 50px; height: 50px; top: -20px; right: 20px; }
 
 .cloud-2 {
-  width: 300px; height: 100px;
-  top: 25%; right: -5%;
-  animation: float 25s infinite ease-in-out reverse;
+  width: 120px; height: 40px;
+  top: 40%; right: 20%;
+  animation: float 15s infinite ease-in-out 2s;
 }
-.cloud-2::before { width: 150px; height: 150px; top: -70px; left: 40px; }
-.cloud-2::after { width: 120px; height: 120px; top: -50px; right: 40px; }
+.cloud-2::before { width: 60px; height: 60px; top: -25px; left: 15px; }
+.cloud-2::after { width: 40px; height: 40px; top: -15px; right: 15px; }
 
 .cloud-3 {
   width: 200px; height: 70px;
@@ -259,8 +265,8 @@ body {
   background: var(--surface-color);
   border: 1px solid var(--surface-border);
   color: var(--text-primary);
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -273,6 +279,10 @@ body {
   background: rgba(255, 255, 255, 0.1);
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.icon-btn:active {
+  transform: translateY(0);
 }
 
 .month-display {
@@ -289,13 +299,13 @@ body {
 
 @media (max-width: 600px) {
   .calendar {
-    padding: 1rem;
+    padding: 1.25rem;
   }
 }
 
 @media (max-width: 400px) {
   .calendar {
-    padding: 0.5rem;
+    padding: 0.75rem;
   }
 }
 
@@ -345,24 +355,29 @@ body {
   cursor: pointer;
   transition: all 0.3s ease;
   background: var(--color-empty);
-  border: 1px solid transparent;
+  border: 2px solid transparent;
   position: relative;
   overflow: hidden;
+  -webkit-tap-highlight-color: transparent;
 }
 
 @media (max-width: 600px) {
   .day-cell {
-    border-radius: 8px;
+    border-radius: 12px;
   }
 }
 
 .day-cell:not(.empty):hover {
   transform: scale(1.05);
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.day-cell:not(.empty):active {
+  transform: scale(0.95);
 }
 
 .day-cell.empty {
-  opacity: 0.3;
+  opacity: 0.2;
   cursor: default;
 }
 
@@ -386,20 +401,20 @@ body {
 
 .day-cell .status-icon {
   margin-top: 4px;
-  opacity: 0.8;
+  opacity: 0.9;
   z-index: 2;
 }
 
 @media (max-width: 600px) {
   .day-cell .status-icon {
-    transform: scale(0.8);
+    transform: scale(0.85);
     margin-top: 2px;
   }
 }
 
 @media (max-width: 400px) {
   .day-cell .status-icon {
-    transform: scale(0.65);
+    transform: scale(0.7);
     margin-top: 0;
   }
 }
@@ -418,17 +433,36 @@ body {
   background: linear-gradient(135deg, transparent, rgba(59, 130, 246, 0.1));
 }
 
+.day-cell.status-home {
+  background: rgba(16, 185, 129, 0.15);
+  border-color: var(--color-home);
+  color: var(--color-home);
+  box-shadow: 0 0 20px var(--color-home-glow);
+}
+.day-cell.status-home::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: linear-gradient(135deg, transparent, rgba(16, 185, 129, 0.1));
+}
 
-.day-cell.status-leave {
+.day-cell.status-remote {
+  background: rgba(6, 182, 212, 0.15);
+  border-color: var(--color-remote);
+  color: var(--color-remote);
+  box-shadow: 0 0 20px var(--color-remote-glow);
+}
+.day-cell.status-remote::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: linear-gradient(135deg, transparent, rgba(6, 182, 212, 0.1));
+}
+
+.day-cell.status-leave, .day-cell.status-holiday {
   background: rgba(245, 158, 11, 0.15);
   border-color: var(--color-leave);
   color: var(--color-leave);
-}
-
-.day-cell.status-holiday {
-  background: rgba(239, 68, 68, 0.15);
-  border-color: var(--color-holiday);
-  color: var(--color-holiday);
 }
 
 .day-cell.is-weekend {
@@ -440,12 +474,12 @@ body {
   padding: 1.5rem;
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 1.25rem;
 }
 
 @media (max-width: 600px) {
   .tracker-sidebar {
-    padding: 1rem;
+    padding: 1.25rem;
     gap: 1rem;
   }
 }
@@ -465,7 +499,7 @@ body {
 }
 
 .week-card {
-  background: rgba(0,0,0,0.2);
+  background: rgba(0,0,0,0.25);
   border-radius: 12px;
   padding: 1.25rem;
   border: 1px solid var(--surface-border);
@@ -480,7 +514,7 @@ body {
 .week-header {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.5rem;
   font-weight: 500;
 }
 
@@ -506,17 +540,15 @@ body {
 }
 
 .week-stats {
-  font-size: 0.875rem;
+  font-size: 0.95rem;
   color: var(--text-secondary);
-  display: flex;
-  justify-content: space-between;
 }
 
 /* Legend */
 .legend {
   display: flex;
   justify-content: center;
-  gap: 2rem;
+  gap: 1rem;
   margin-top: 2rem;
   grid-column: 1 / -1;
   flex-wrap: wrap;
@@ -524,8 +556,8 @@ body {
 
 @media (max-width: 600px) {
   .legend {
-    gap: 0.75rem;
-    margin-top: 1rem;
+    gap: 0.5rem;
+    margin-top: 1.5rem;
   }
 }
 
@@ -554,7 +586,7 @@ body {
 .monthly-summary {
   padding: 1.5rem;
   margin-bottom: 1.5rem;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.01));
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02));
 }
 
 .monthly-summary h2 {
@@ -572,7 +604,7 @@ body {
   display: flex;
   align-items: center;
   gap: 1rem;
-  background: rgba(0, 0, 0, 0.2);
+  background: rgba(0, 0, 0, 0.25);
   padding: 1rem;
   border-radius: 12px;
   border: 1px solid var(--surface-border);
@@ -580,6 +612,7 @@ body {
 
 .icon-blue { color: var(--color-office); }
 .icon-green { color: var(--color-home); }
+.icon-teal { color: var(--color-remote); }
 .icon-amber { color: var(--color-leave); }
 
 .summary-details {
@@ -589,7 +622,7 @@ body {
 }
 
 .summary-label {
-  font-size: 0.75rem;
+  font-size: 0.8rem;
   color: var(--text-secondary);
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -621,12 +654,12 @@ body {
 
 /* Fix for animation of popping in */
 @keyframes popIn {
-  0% { transform: scale(0.9); opacity: 0; }
+  0% { transform: scale(0.95); opacity: 0; }
   100% { transform: scale(1); opacity: 1; }
 }
 
 .animate-pop {
-  animation: popIn 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  animation: popIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 /* Face Illustration */
