@@ -98,6 +98,14 @@ export const PUBLIC_HOLIDAYS = [
   '2026-10-29', // Cumhuriyet Bayramı
 ];
 
+export const DEFAULT_REMOTE_DAYS = [
+  '2026-07-27',
+  '2026-07-28',
+  '2026-07-29',
+  '2026-07-30',
+  '2026-07-31',
+];
+
 /**
  * Checks if a given date is a public holiday
  */
@@ -105,3 +113,11 @@ export function isPublicHoliday(date) {
   const key = getDateKey(date);
   return PUBLIC_HOLIDAYS.includes(key);
 }
+
+/**
+ * Checks if a given date string key is a default remote day
+ */
+export function isDefaultRemoteDay(dateKey) {
+  return DEFAULT_REMOTE_DAYS.includes(dateKey);
+}
+

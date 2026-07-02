@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
+import { isDefaultRemoteDay } from '../utils/dateHelpers';
 
-// Possible statuses: 'office' | 'home' | 'leave' | 'holiday' | null
+// Possible statuses: 'office' | 'home' | 'leave' | 'holiday' | 'remote' | null
 
 export function useAttendanceData() {
   const [attendance, setAttendance] = useState(() => {
@@ -33,7 +34,13 @@ export function useAttendanceData() {
   };
 
   const getDayStatus = (dateKey) => {
-    return attendance[dateKey] || null;
+    if (attendance[dateKey]) {
+      return attendance[dateKey];
+    }
+    if (isDefaultRemoteDay(dateKey)) {
+      return 'remote';
+    }
+    return null;
   };
 
   return {
